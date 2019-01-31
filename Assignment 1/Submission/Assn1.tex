@@ -1,0 +1,128 @@
+\documentclass{article}
+
+%\usepackage{amsmath}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+%\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{multicol}
+
+\begin{document}
+\title{Hello \LaTeX\ World}
+
+\author{Jucheol Moon \\ 
+\small Computer engineering and Computer Science \\
+\small California State University Long Beach \\
+\small \texttt{\href{mailto:jucheol.moon@csulb.com}{jucheol.moon@csulb.com}}
+}
+
+
+
+
+\date{}
+
+\maketitle
+
+\begin{abstract}
+This document is a model and instructions for \LaTeX\  `article' class.
+\end{abstract}
+
+\section{Introduction}
+Welcome to the \LaTeX\ world.
+
+\section{Ease of Use}
+
+\subsection{Maintaining the Integrity of the Specifications}
+The `article' class is used to format your paper and style the text. All margins, column widths, line spaces, and text fonts are prescribed.
+
+\section{Styling Guide}
+
+\subsection{Abbreviations and Acronyms}
+Define abbreviations and acronyms the first time they are used in the text, 
+even after they have been defined in the abstract.
+
+\subsection{Equations}
+\begin{equation}
+\sum\limits_{n=0}^\infty \frac {af^n}{n!}{(x-a)^n}
+\end{equation}
+
+\noindent
+(1) is the famous Taylor series. Use "(1)", not "Eq. (1)" or "equation (1)", except at the beginning of a sentence: "Equation (1) is . . ."
+\newline
+\indent
+Taylor series in a text would be $\sum_{n=0}^\infty \frac {af^n}{n!}{(x-a)^n}$.
+
+\subsection{Lists}
+Bullet style list.
+\begin{itemize}
+    \item item 1
+    \item item 2
+    \item item 3
+\end{itemize}
+
+Number style list.
+\begin{enumerate}
+    \item item 1
+    \item item 2
+    \item item 3
+\end{enumerate}
+
+\subsection{Figures and Tables}
+\paragraph{Positioning Figures and Tables} Figure captions should be below the figures; table heads should appear above the tables. Insert figures and tables after they are cited in the text. Use the abbreviation ``Fig. 1".
+
+
+
+
+\begin{table}[h]
+
+\caption{Table Type Styles}
+\begin{center}
+\begin{tabular}{|c||c|c|c|}
+\hline
+\multirow{2}{*}{}\textbf{Table} & \multicolumn{3}{c|}{\textbf{Table Column Head}}\\ \cline{2-4} \textbf{Head} & \emph{\textbf{Table column subhead}} & \emph{\textbf{Subhead}} & \emph{\textbf{Subhead}} \\ \hline
+     &  &  & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.1]{fig1.png}
+    \caption{Working Example}
+    \label{fig:my_label}
+\end{figure}
+
+\newpage
+\subsection{Algorithms}
+\begin{algorithmic}
+\STATE $i\gets 10$
+\IF {$i\geq 5$}
+        \STATE $i\gets i-1$
+\ELSE
+        \IF {$i\leq 3$}
+                \STATE $i\gets i+2$
+        \ENDIF
+\ENDIF
+\end{algorithmic}
+
+\subsection{Source codes}
+\begin{verbatim}
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World");
+    }
+}
+\end{verbatim}
+
+\subsection{References}
+Please number citations consecutively within brackets [1]. The sentence punctuation follow the bracket [2]. Refer simply to the reference number, as in [3]--do not use "Ref. [3]" or "reference [3]" except at the beginning of a sentence.
+
+
+\begin{thebibliography}{00}
+\bibitem{Eason} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
+\bibitem{Maxwell} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
+\bibitem{Jacobs} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350
+\end{thebibliography}
+
+\end{document}
