@@ -5,9 +5,9 @@ from Board import Board
 def set_random_queens(n, k):
     states = []
     for _ in range(int(k)):
-        random_queens = ""
+        random_queens = []
         for _ in range(int(n)):
-            random_queens += str(random.randint(1, int(n) - 1))
+            random_queens.append((random.randint(1, int(n) - 1)))
         states.append(random_queens)
     return states
 

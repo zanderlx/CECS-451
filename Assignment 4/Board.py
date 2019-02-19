@@ -1,11 +1,13 @@
+import math
 
 class Board:
 
     def __init__(self, queens: int):
+        self.queens = queens
         self.spaces = [["-" for col in range(queens)] for row in range(queens)]
 
 
-    def populate(self, positions: str):
+    def populate(self, positions: list):
         col = 0
         for row in range(len(positions)):
             (self.spaces[int(positions[row]) - 1])[col] = "Q"
@@ -19,7 +21,7 @@ class Board:
 
     def check_topright(self, row, col):
         result = 0
-        for _ in zip(range(row, -1, -1), range(col, 7, 1)):
+        for _ in zip(range(row, -1, -1), range(col, self.queens - 1, 1)):
             col += 1
             row -= 1
             if (self.spaces[row])[col] is "Q":
@@ -31,7 +33,7 @@ class Board:
     def check_middleright(self, row, col):
         result = 0
         
-        for col in range(col, 7):
+        for col in range(col, self.queens - 1):
             col += 1
             if (self.spaces[row])[col] is "Q":
                 result += 1
@@ -41,7 +43,7 @@ class Board:
 
     def check_bottomright(self, row, col):
         result = 0
-        for _ in zip(range(row, 7), range(col, 7)):
+        for _ in zip(range(row, self.queens - 1), range(col, self.queens - 1)):
             col += 1
             row += 1
             if (self.spaces[row])[col] is "Q":
@@ -54,7 +56,7 @@ class Board:
         result = 0
         col = 0
         for digit in state:
-            if col is 7: break
+            if col is self.queens - 1: break
             # print("Column", col)
             row = int(digit) - 1
             result += self.check_topright(row, col)
@@ -62,15 +64,18 @@ class Board:
             result += self.check_bottomright(row, col)
             col += 1 
         # print("Attacking Queens:", result)
-        print("Non-Attacking Queens:", 28 - result)
+        print("Non-Attacking Queens:", self.combination(self.queens) - result)
+
+    
+    def combination(self, queens: int):
+        return math.factorial(queens) / (math.factorial(queens - 2) * math.factorial(2))
 
 if __name__ == "__main__":
-    b = Board(8)
-    
+    b = Board(19)
+
     # b.populate("24748552")
     # b.populate("32752411")
     # b.populate("24415124")
-    b.populate("32543213")
+    # b.fitness("32543213")
+    b.populate("1234567891234567891")
     b.display()
-    b.fitness("32543213")
-    # b.populate("01234567890123456780123456789012345678")
