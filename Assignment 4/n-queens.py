@@ -18,7 +18,6 @@ def check_topright(board, row, col):
     row -= 1
     col += 1
     while row >= 0 and col < board.queens:
-        # print(row, col)
         if (board.spaces[row])[col] is "Q":
             result += 1
             # print("     top right", row, col)
@@ -47,20 +46,20 @@ def check_bottomright(board, row, col):
             # print("     bottom right", row, col)
     return result
 
-
+""" Fitness function getting number of non-attacking queens """
 def fitness_function(board, state):
     result = 0
     col = 0
+
     for digit in state:
+        # Last column is irrelevant
         if col is board.queens - 1: break
-        # print("Column", col)
+        
         row = int(digit) - 1
         result += check_topright(board, row, col)
         result += check_middleright(board, row, col)
         result += check_bottomright(board, row, col)
         col += 1 
-    # print("Attacking Queens:", result)
-    # print("Non-Attacking Queens:", board.combination(board.queens) - result)
     
     # Number of Non-Attacking Queens (Max Attacking Queens - Total Queens)
     return combination(board.queens) - result
@@ -70,24 +69,22 @@ def combination(queens: int):
     return math.factorial(queens) / (math.factorial(queens - 2) * math.factorial(2))
 
 
-# Select a random state using the fitness probabilities
-# and random uniform number for comparison
+""" SELECTION """
 def selection(states, fitness_probabilities):
+    # Use random uniform number for probabilitiy comparison
     r = random.uniform(0, 1) 
     fitness_sum = fitness_probabilities[0]   
     for index in range(len(fitness_probabilities)):
-        if r > 0 and r <= fitness_sum : 
-            # print(states[index], r)
-            return index
+        if r > 0 and r <= fitness_sum : return index
         fitness_sum += fitness_probabilities[index]
 
 
 """ CROSSOVER """
 def crossover(states, parent1, parent2):
-
     # print("\nBreeding")
     start = int(len(states[0]) / 2)
     end = int(len(states[0]))
+
     # Cross breed starting in the middle
     for position in range(start, end):
         (states[parent1])[position], (states[parent2])[position] = (states[parent2])[position], (states[parent1])[position]
@@ -130,93 +127,84 @@ def mutation(states, parent1, parent2):
     return states
 
 
-def checkBoard(states):
+def solutionFound(states):
+    # Generate new population from using genetic algorithm
     for i in range(len(states)):
         board = Board(int(n))
         board.populate(states[i])
-        # board.display()
-        # print(states[i])
-        # print("\n")
+        # Check if there is a solution in new population
         if int(fitness_function(board, states[i])) == combination(int(n)):
-            # print("\n---------------------------------------------")
             print("Found Possible Solution:", states[i])
             board.display()
             return True
 
 
 if __name__ == "__main__":
-    print("Searching...")
     # Number of queens
     n = sys.argv[1]
     # Number of states
     k = sys.argv[2]
 
     population = []
-    fitness_values = []
-    states = set_random_queens(n, k)
-    # print(states)
 
-    ''' ---------POPULATE BOARD----------------------------------------------------'''
-    index = 0
+    print("Searching...")
+
+    ''' --------------- INITIAL POPULATION --------------- '''
+
+    # Generate random queen positioning
+    states = set_random_queens(n, k)
+
+    # Generate initial population
     for state in states:
         board = Board(int(n))
         board.populate(state)
-        # print("Board #", index, "->", state, "\n")
-        # board.display()
-        population.append(board)
-        fitness_values.append(fitness_function(board, state))
-        # print("\n")
-        index += 1
+        population.append(fitness_function(board, state))
     
     # Get fitness values in terms of probabilities
     fitness_probabilities = []
-    for value in fitness_values: fitness_probabilities.append(value / sum(fitness_values))
+    [ fitness_probabilities.append(value / sum(population)) for value in population ]
 
 
-    ''' --------GENETIC ALGORITHM------------------------------------------------ '''
-    steps = 0
-    numberOfCrossbreed = 0
-    numberOfMutations = 0
+    ''' --------------- GENETIC ALGORITHM --------------- '''
+
+    numberOfCrossbreed = numberOfMutations = 0
     foundSolution = False
+
+    # Keep searching until a solution is found
     while not foundSolution:
         # Choose random parents
-        parent1 = None
-        parent2 = None
+        parent1 = parent2 = None
 
+        # Check if parent1 exists
         while type(parent1) is type(None):
             parent1 = selection(states, fitness_probabilities)
 
+        # Check if parent2 exists
         while type(parent2) is type(None):
             parent2 = selection(states, fitness_probabilities)
-            while parent2 == parent1:
-                parent2 = selection(states, fitness_probabilities)
+            # Change parent2 if it is the same as 
+            # while parent2 == parent1:
+            #     parent2 = selection(states, fitness_probabilities)
 
-        
-
-
-        # View parents before "breeding"
-        # print("\n-------------------------------------------------")
-        # print("\nOriginal")
-        # # print(states)
-        # print("Before:", states[parent1], parent1)
-        # print("Before:", states[parent2], parent2)
-
+        # Breed selected parents
         states = crossover(states, parent1, parent2)
         numberOfCrossbreed += 1
-        if checkBoard(states): break
 
+        # Check if solution is found after breeding
+        if solutionFound(states): break
+
+        # Mutate the children
         states = mutation(states, parent1, parent2)
         numberOfMutations += 1
-        # print(states)
-        if checkBoard(states): break
+        
+        # Check if solution is found after mutation
+        if solutionFound(states): break
 
+        generations = numberOfCrossbreed + numberOfMutations
+        print("Current Generation:", generations)
 
-        # print(states)
     print("Total Crossbreeds:", numberOfCrossbreed)
     print("Total Mutations:", numberOfMutations)
-    print("Total Number of Steps:", numberOfCrossbreed + numberOfMutations)
+    print("Total Generations:", generations)
 
-    # print(fitness_probabilities)
-    # Get random state
-    # print(selection(states, fitness_probabilities))
     
