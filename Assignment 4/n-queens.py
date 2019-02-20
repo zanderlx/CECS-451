@@ -139,7 +139,8 @@ def checkBoard(states):
         # print("\n")
         if int(fitness_function(board, states[i])) == combination(int(n)):
             # print("\n---------------------------------------------")
-            # print("Solution:", states[i])
+            print("Found Possible Solution:", states[i])
+            board.display()
             return True
 
 
@@ -202,8 +203,7 @@ if __name__ == "__main__":
 
         states = crossover(states, parent1, parent2)
         numberOfCrossbreed += 1
-        if checkBoard(states): 
-            break
+        if checkBoard(states): break
 
         states = mutation(states, parent1, parent2)
         numberOfMutations += 1
@@ -214,7 +214,7 @@ if __name__ == "__main__":
         # print(states)
     print("Total Crossbreeds:", numberOfCrossbreed)
     print("Total Mutations:", numberOfMutations)
-    print("Final Total:", numberOfCrossbreed + numberOfMutations)
+    print("Total Number of Steps:", numberOfCrossbreed + numberOfMutations)
 
     # print(fitness_probabilities)
     # Get random state
