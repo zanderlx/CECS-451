@@ -4,7 +4,7 @@ class Board:
     """ Initialize board """
     def __init__(self, queens: int):
         self.queens = queens
-        self.spaces = [['-' for col in range(queens)] for row in range(queens)]
+        self.spaces = [[u"\u2022" for col in range(queens)] for row in range(queens)]
 
     """ Populate board using list """
     def populate(self, positions: list):
